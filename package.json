@@ -1,0 +1,31 @@
+{
+  "name": "electron-pouchdb-react",
+  "version": "0.0.1",
+  "description": "A sample project using electron, pouchdb and react",
+  "main": "main/index.js",
+  "scripts": {
+	"start": "gulp start",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ziliwesley/electron-pouchdb-react.git"
+  },
+  "keywords": [
+    "electron",
+    "pouchdb",
+    "react"
+  ],
+  "author": "Zili (ziliwesley@live.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ziliwesley/electron-pouchdb-react/issues"
+  },
+  "homepage": "https://github.com/ziliwesley/electron-pouchdb-react#readme",
+  "devDependencies": {
+    "electron-prebuilt": "0.32.2",
+    "gulp": "^3.9.0",
+    "gulp-util": "^3.0.6",
+    "fs-jetpack": "^0.7.0"
+  }
+}

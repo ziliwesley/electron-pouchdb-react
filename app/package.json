@@ -1,0 +1,16 @@
+{
+  "name": "electron-pouchdb-react",
+  "productName": "Sync It",
+  "identifier": "com.ziliwesley.sync-it",
+  "description": "A sample project using electron, pouchdb and react",
+  "version": "0.0.1",
+  "author": "Zili (ziliwesley@live.com)",
+  "main": "main/index.js",
+  "config": {
+    "target": "development"
+  },
+  "dependencies": {
+    "babel": "^5.8.23",
+    "fs-jetpack": "^0.7.0"
+  }
+}
