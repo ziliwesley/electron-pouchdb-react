@@ -1,5 +1,6 @@
-# Webpack configurations
-webpack/
-
-# Gulp tasks
+# Gulpfile
 gulpfile.js
+
+# Dependencies
+**/node_modules/*
+assets/*

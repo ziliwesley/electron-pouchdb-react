@@ -26,7 +26,7 @@ everything is packed up using the webpack and loaders.
 ## Roadmap
 
 * [ ] Setting up and play with webpack's hot dev server
-* [ ] Tuning eslint for code linting
+* [x] Tuning eslint for code linting
 * [ ] Test out the [esdoc](https://esdoc.org/) for documentation auto-generation
 * [ ] Try out Jest for unit testing
 
