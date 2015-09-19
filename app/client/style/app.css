@@ -1,0 +1,7 @@
+body {
+    overflow: hidden;
+}
+
+ul.am-list.am-list-static > li:first-of-type {
+    border-top: none;
+}

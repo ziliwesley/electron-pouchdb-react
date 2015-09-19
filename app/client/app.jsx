@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import AMUIReact, { Grid, Col, Panel } from 'amazeui-react';
 
-import LeftPane from './components/left-pane.jsx';
+import LeftPane from './components/left-pane/';
 import RightPane from './components/right-pane.jsx';
 
 class App extends Component {

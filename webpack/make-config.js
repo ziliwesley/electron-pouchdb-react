@@ -50,7 +50,9 @@ module.exports = function (opts) {
 		/^react(\/.*)?$/,
 		/^reflux(\/.*)?$/,
 		'amazeui-react',
-		'react-highcharts'
+		'react-highcharts',
+        'bluebird',
+        'flux'
 	];
 
 	// A array of automatically applied loaders.
