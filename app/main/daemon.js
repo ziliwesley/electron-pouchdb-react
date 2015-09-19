@@ -14,26 +14,31 @@ import menuTmpl from './config/menu-template';
 // --------------------------------------------------
 
 // Path of folder that contains all client files
-let clientDir = path.resolve(__dirname, '../client');
+const clientDir = path.resolve(__dirname, '../client');
 
 /**
  * Entry of the main process
  */
-export default function main () {
-    let cleanupTasks = [];
+export default function main() {
+    const cleanupTasks = [];
+    let url = `file://${clientDir}/index.html`;
 
     // Executed after the electron shell is ready
-    app.on('ready', function () {
-    	let mainWin = new BrowserWindow({
+    app.on('ready', () => {
+        const mainWin = new BrowserWindow({
             'width': 900,
-            'height': 610,
-            'min-width': 900,
-            'min-height': 610
+            'height': 460,
+            'resizable': false
         });
 
-        // Load static client page
-        console.log(`loading \"file://${clientDir}/index.html\"`);
-        mainWin.loadUrl(`file://${clientDir}/index.html`);
+
+        if (process.env.NODE_ENV === 'development') {
+            // Load the url of the dev server
+            url = `file://${clientDir}/index-dev.html`;
+        }
+
+        console.log(`loading url ${url}`);
+        mainWin.loadUrl(url);
 
         // Set application's menu
         Menu.setApplicationMenu(
@@ -41,7 +46,7 @@ export default function main () {
     });
 
     // Executed after all windows are closed by the user
-    app.on('window-all-closed', function () {
+    app.on('window-all-closed', () => {
         console.log('all window closed, terminating the main process.');
         app.quit();
     });
@@ -49,7 +54,7 @@ export default function main () {
     // Executed before the main process actually terminated.
     // It can be treated as the *last changce* for saving works
     // not done.
-    app.on('will-quit', function () {
+    app.on('will-quit', () => {
         console.log('main process is about to be terminated');
 
         // Run all cleanup tasks
@@ -57,4 +62,4 @@ export default function main () {
             task();
         });
     });
-};
+}
