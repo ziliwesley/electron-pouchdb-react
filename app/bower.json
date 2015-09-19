@@ -1,0 +1,29 @@
+{
+  "name": "electron-pouchdb-react",
+  "version": "0.0.1",
+  "homepage": "https://github.com/ziliwesley/electron-pouchdb-react",
+  "authors": [
+    "Zili <ziliwesley@live.com>"
+  ],
+  "description": "A sample project using electron, pouchdb and react",
+  "main": "client/index.html",
+  "moduleType": [
+    "node"
+  ],
+  "keywords": [
+    "electron",
+    "pouchdb",
+    "react"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "amazeui": "~2.4.2"
+  }
+}
