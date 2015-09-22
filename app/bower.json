@@ -24,6 +24,7 @@
     "tests"
   ],
   "dependencies": {
-    "amazeui": "~2.4.2"
+    "amazeui": "~2.4.2",
+    "pouchdb": "~4.0.3"
   }
 }

@@ -1,43 +1,24 @@
 import { EventEmitter } from 'events';
+import { find, findLastIndex } from 'lodash';
 import AppDispatcher from '../dispatcher/app-dispatcher';
+import { getFavoritesList, saveFavoriteList, getStockList, syncWith } from './pouchdb-store';
 
 class StockListStore extends EventEmitter {
     constructor() {
         super();
-        this.stockList = [
-            {
-                code: '600009',
-                name: '股票1'
-            },
-            {
-                code: '600010',
-                name: '股票2'
-            },
-            {
-                code: '600011',
-                name: '股票3'
-            },
-            {
-                code: '600012',
-                name: '股票4'
-            },
-            {
-                code: '000009',
-                name: '股票11'
-            },
-            {
-                code: '000010',
-                name: '股票12'
-            },
-            {
-                code: '000011',
-                name: '股票13'
-            },
-            {
-                code: '000012',
-                name: '股票14'
-            }
-        ];
+        this.stockList = [];
+        this.favorites = [];
+
+        getStockList()
+            .then((response) => {
+                this.stockList = response.collection;
+            });
+
+        getFavoritesList()
+            .then((response) => {
+                this.favorites = response.collection;
+                this.emit('favorites_update');
+            });
     }
 
     getAll() {
@@ -49,28 +30,93 @@ class StockListStore extends EventEmitter {
         const codeMatches = [];
         const nameMatches = [];
 
-        if (keyword.length < 1) {
+        if (keyword.length < 2) {
             return [];
         }
 
         this.stockList
             .forEach((stock) => {
-                if (pattern.test(stock.code)) {
-                    return codeMatches.push({
-                        code: stock.code.replace(pattern, `<b class="am-text-success">${keyword}</b>`),
-                        name: stock.name.replace(pattern, `<b class="am-text-success">${keyword}</b>`)
-                    });
+                if (pattern.test(stock.stockCode)) {
+                    return codeMatches.push(stock);
                 }
 
                 if (pattern.test(stock.name)) {
-                    return nameMatches.push({
-                        code: stock.code.replace(pattern, `<b class="am-text-success">${keyword}</b>`),
-                        name: stock.name.replace(pattern, `<b class="am-text-success">${keyword}</b>`)
-                    });
+                    return nameMatches.push(stock);
                 }
             });
 
-        return codeMatches.concat(nameMatches);
+        return codeMatches
+            .concat(nameMatches)
+            .splice(0, 50);
+    }
+
+    getAllFavorites() {
+        return this.favorites;
+    }
+
+    addFavorite(stock) {
+        let match = find(this.favorites, 'stockCode', stock.stockCode);
+        if (!match) {
+            this.favorites.unshift(stock);
+            saveFavoriteList(this.favorites)
+                .then((response) => {
+                    this.emit('favorites_update');
+                });
+        }
+    }
+
+    removeFavorite(stock) {
+        let index = findLastIndex(this.favorites, 'stockCode', stock.stockCode);
+        if (index > -1) {
+            this.favorites.splice(index, 1);
+            saveFavoriteList(this.favorites)
+                .then((response) => {
+                    this.emit('favorites_update', this.favorites);
+                });
+        }
+    }
+
+    getUpstream() {
+        return localStorage.getItem('upstream') || 'http://localhost:5984';
+    }
+
+    /**
+     * Sync local PouchDB with remote CouchDB DB
+     * @param  {string} upstream Base url of upstream CouchDB
+     * @return {Promise}
+     */
+    syncStockList(upstream) {
+        return syncWith(upstream)
+            .on('change', (info) => {
+                let notification = new Notification('Sync', {
+                    title: 'Sync',
+                    body: 'Stock List Updated.'
+                });
+            })
+            .on('error', (err) => {
+                let notification = new Notification('Sync', {
+                    title: 'Sync',
+                    body: `Sync Failed: ${err.message}`
+                });
+
+                this.emit('synced');
+            })
+            .on('complete', (info) => {
+                let notification;
+                if (info.docs_written > 0) {
+                    notification = new Notification('Sync', {
+                        title: 'Sync',
+                        body: 'Stock list updated.'
+                    });
+                } else {
+                    notification = new Notification('Sync', {
+                        title: 'Sync',
+                        body: 'No updates available.'
+                    });
+                }
+
+                this.emit('synced');
+            });
     }
 }
 
@@ -80,6 +126,15 @@ AppDispatcher.register((payload) => {
     switch (payload.type) {
         case 'query':
             stockInfoStore.emit('query', payload.keyword.trim());
+            break;
+        case 'add':
+            stockInfoStore.addFavorite(payload.stock);
+            break;
+        case 'remove':
+            stockInfoStore.removeFavorite(payload.stock);
+            break;
+        case 'sync':
+            stockInfoStore.syncStockList(payload.upstream);
             break;
         default:
     }

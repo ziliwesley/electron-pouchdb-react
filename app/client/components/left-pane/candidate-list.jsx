@@ -1,43 +1,67 @@
 import React from 'react';
-import { List, ListItem, Icon } from 'amazeui-react';
+import { List } from 'amazeui-react';
+import Highlight from 'react-highlighter';
+import { find } from 'lodash';
+
 import Component from '../base-component.jsx';
+import StockListItem from './stock-list-item.jsx';
 import StockListStore from '../../stores/stock-list-store';
 import { listen } from '../../decorators';
+import AppDispatcher from '../../dispatcher/app-dispatcher';
 
-const getCandidates = (keyword = '') => {
-    return {
-        candidates: StockListStore.getCandidates(keyword)
-    };
-}
 
 export default class CandidateList extends Component {
     constructor(props) {
         super(props);
         // Set initial state
-        this.state = getCandidates();
-        this.destructors = [];
+        this.state = {
+            candidates: [],
+            favorites: StockListStore.getAllFavorites(),
+            keyword: ''
+        };
     }
 
     @listen(StockListStore, 'query')
-    onChange(keyword) {
-        this.setState(getCandidates(keyword));
+    onUpdated(keyword) {
+        this.setState({
+            candidates: StockListStore.getCandidates(keyword),
+            keyword: keyword
+        });
+    }
+
+    @listen(StockListStore, 'favorites_update')
+    onFavoritesUpdate(keyword) {
+        this.setState({
+            favorites: StockListStore.getAllFavorites()
+        });
+    }
+
+    handleClick(stock, type) {
+        AppDispatcher.dispatch({
+            type,
+            stock
+        });
     }
 
 	render() {
         const listStyle = {
-            height: 325,
+            height: 318,
             resize: 'none'
         }
+
 		return (
-			<List style={listStyle} className="am-scrollable-vertical" static>
+			<List style={listStyle} className="am-margin-top-xs am-margin-bottom-0 am-scrollable-vertical" static>
                 {
                     this.state.candidates.map((candidate) => {
+                        let heartIcon, clickHandler;
+                        let match = find(this.state.favorites, 'stockCode', candidate.stockCode);
+
                         return (
-                            <ListItem className="am-cf" key={candidate.code}>
-            					<span className="am-margin-right-xs am-vertical-align-middle" dangerouslySetInnerHTML={{__html: candidate.name}}></span>
-                                <span className="am-text-xs am-vertical-align-middle" dangerouslySetInnerHTML={{__html: candidate.code}}></span>
-                                <Icon className="am-fr am-text-danger" amSize="xs" icon="heart" />
-            				</ListItem>
+                            <StockListItem
+                                key={candidate.stockCode}
+                                stock={candidate}
+                                keyword={this.state.keyword}
+                                isLiked={match !== undefined} />
                         );
                     })
                 }

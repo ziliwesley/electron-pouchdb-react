@@ -1,7 +1,25 @@
 body {
     overflow: hidden;
+    -webkit-user-select: none;
 }
 
 ul.am-list.am-list-static > li:first-of-type {
     border-top: none;
+}
+
+ul.am-list.am-list-static > li {
+    cursor: pointer;
+    transition: all .2s;
+}
+
+ul.am-list.am-list-static > li:hover {
+    transform: translate(3px);
+}
+
+ul.am-list.am-list-static > li i:last-child {
+    margin-right: 3px;
+}
+
+.am-tabs .am-form-group {
+    margin-bottom: 5px;
 }

@@ -13,9 +13,13 @@
     "amazeui-react": "^1.0.0-beta1",
     "babel": "^5.8.23",
     "bluebird": "^2.10.0",
-    "fs-jetpack": "^0.7.0",
-    "react": "^0.13.3",
+    "fetch-jsonp": "^0.9.2",
     "flux": "^2.1.1",
-    "react-highcharts": "^2.0.0"
+    "fs-jetpack": "^0.7.0",
+    "lodash": "^3.10.1",
+    "moment": "^2.10.6",
+    "react": "^0.13.3",
+    "react-highcharts": "^2.1.0",
+    "react-highlighter": "^0.2.2"
   }
 }

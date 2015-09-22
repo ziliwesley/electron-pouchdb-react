@@ -28,7 +28,7 @@ export default function main() {
         const mainWin = new BrowserWindow({
             'width': 900,
             'height': 460,
-            'resizable': false
+            // 'resizable': false
         });
 
 

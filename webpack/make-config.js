@@ -50,9 +50,17 @@ module.exports = function (opts) {
 		/^react(\/.*)?$/,
 		/^reflux(\/.*)?$/,
 		'amazeui-react',
-		'react-highcharts',
+		/^react-highcharts(\/.*)?$/,
+        'react-highlighter',
         'bluebird',
-        'flux'
+        'lodash',
+        'moment',
+        'fetch-jsonp',
+        'flux',
+        {
+            'fetch': 'var fetch',
+            'pouchdb': 'var PouchDB'
+        }
 	];
 
 	// A array of automatically applied loaders.

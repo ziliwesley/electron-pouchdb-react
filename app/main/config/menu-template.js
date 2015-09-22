@@ -26,6 +26,35 @@ export default function (mainWin) {
             }
         }]
     }, {
+        label: 'Edit',
+        submenu: [{
+            label: 'Undo',
+            accelerator: 'Cmd+Z',
+            role: 'undo'
+        }, {
+            label: 'Redo',
+            accelerator: 'Shift+Cmd+Z',
+            role: 'redo'
+        }, {
+            type: 'separator'
+        }, {
+            label: 'Cut',
+            accelerator: 'Cmd+X',
+            role: 'cut'
+        }, {
+            label: 'Copy',
+            accelerator: 'Cmd+C',
+            role: 'copy'
+        }, {
+            label: 'Paste',
+            accelerator: 'Cmd+V',
+            role: 'paste'
+        }, {
+            label: 'Select All',
+            accelerator: 'Cmd+A',
+            role: 'selectall'
+        }]
+    }, {
         label: 'View',
         submenu: [{
             label: 'Toggle &Developer Tools',

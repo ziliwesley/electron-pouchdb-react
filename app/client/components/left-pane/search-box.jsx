@@ -13,7 +13,7 @@ export default class SearchBox extends Component {
     }
 
     handleChange = (event) => {
-        const keyword = this.refs.keyword.getValue(); 
+        const keyword = this.refs.keyword.getValue();
         this.setState({
             keyword
         });
@@ -27,7 +27,6 @@ export default class SearchBox extends Component {
 		return (
             <Input
                 radius
-                className="am-margin-top-sm"
                 value={this.state.keyword}
                 icon="search"
                 type="text"
