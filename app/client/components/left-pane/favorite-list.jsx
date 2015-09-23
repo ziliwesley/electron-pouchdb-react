@@ -1,6 +1,7 @@
 import React from 'react';
 import { List, ListItem, Icon } from 'amazeui-react';
 import Component from '../base-component.jsx';
+import StockListItem from './stock-list-item.jsx';
 import StockListStore from '../../stores/stock-list-store';
 import { listen } from '../../decorators';
 import AppDispatcher from '../../dispatcher/app-dispatcher';
@@ -38,11 +39,11 @@ export default class FavoriteList extends Component {
                 {
                     this.state.favorites.map((favorite) => {
                         return (
-                            <ListItem className="am-cf" key={favorite.stockCode}>
-            					<span className="am-margin-right-xs am-vertical-align-middle">{favorite.name}</span>
-                                <span className="am-text-xs am-vertical-align-middle">{favorite.stockCode}</span>
-                                <Icon className="am-fr am-text-danger" amSize="xs" icon="heart" onClick={this.handleClick.bind(this, favorite)} />
-            				</ListItem>
+                            <StockListItem
+                                key={favorite.stockCode}
+                                stock={favorite}
+                                keyword=""
+                                isLiked={true} />
                         );
                     })
                 }
